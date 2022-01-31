@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour, IDiable
 {
-    public static Action<int> SpendAttempt; 
-
     public static Action<SoundType> PlayBounceSound;  
     public static Action<SoundType> PlayHitSound; 
     public static Action<SoundType> PlayGetBonusSound; 
     public static Action<SoundType> PlayGetDibuffSound;  
+
+    [SerializeField] private GameObject _rewindPoint;
+   
+    private GameObject _rewindPointInstance;
+    [SerializeField] private GameObject _rewindEffect;
 
     [SerializeField] private Rigidbody2D _ballRigidBody;
 
@@ -18,11 +21,10 @@ public class Ball : MonoBehaviour, IDiable
 
     public TrailRenderer TrailRenderer;
 
-    private bool isRewindig = false;
+    private bool _isRewindig = false;
 
     public int RewindTime = 2;
 
-    public int RewindTimeAttampts { get; private set;}
     public List<PointInTime> previosPositions = new List<PointInTime>();
 
     public Rigidbody2D BallRigidBody
@@ -46,19 +48,18 @@ public class Ball : MonoBehaviour, IDiable
         _spriteRenderer = GetComponent<SpriteRenderer>();
         SlowDownBallBlock.ReduceBallSpeed += SlowDownBall;
         GameStateManager.Instance.OnGameStateChange += OnGameStateChange;
-        GameManager.GetInfoAboutLevel += OnLevelInfoChange;
+        Player.OnRewind += OnRewind;
+    }
+
+    private void OnRewind(bool value)
+    {
+        _isRewindig = value;
     }
 
     void OnDestroy() 
     {
         SlowDownBallBlock.ReduceBallSpeed -= SlowDownBall;
         GameStateManager.Instance.OnGameStateChange -= OnGameStateChange;
-        GameManager.GetInfoAboutLevel -= OnLevelInfoChange;
-    }
-
-    private void OnLevelInfoChange(LevelInfo level)
-    {
-        RewindTimeAttampts = level.TimeRewindAttapts;
     }
 
     private void OnGameStateChange(GameState newGameState)
@@ -68,7 +69,7 @@ public class Ball : MonoBehaviour, IDiable
 
     void FixedUpdate() 
     {
-        if(isRewindig)
+        if(_isRewindig)
         {
             Rewind();
         }else
@@ -76,20 +77,7 @@ public class Ball : MonoBehaviour, IDiable
             Record();
         }
     }
-    void Update() 
-    {
-        if(Input.GetKeyDown(KeyCode.C) && RewindTimeAttampts > 0)
-        {
-            isRewindig = true;
-            _ballRigidBody.isKinematic = true;
 
-            if(RewindTimeAttampts > 0)
-            {
-                RewindTimeAttampts --;
-                SpendAttempt?.Invoke(RewindTimeAttampts);
-            }
-        }
-    }
     private void Rewind()
     {
         if(previosPositions.Count > 0)
@@ -100,8 +88,13 @@ public class Ball : MonoBehaviour, IDiable
         }
         if(previosPositions.Count == 0 )
         {
-            isRewindig = false;
+            _isRewindig = false;
             _ballRigidBody.isKinematic = false;
+            if(_ballRigidBody.velocity == Vector2.zero)
+            {
+                print("_ballRigidBody.velocity == 0");
+                _ballRigidBody.velocity = new Vector2(0,7);
+            }
         }
     }
     private void Record()
@@ -168,5 +161,21 @@ public class Ball : MonoBehaviour, IDiable
     public void OnDie()
     {
         Destroy(gameObject);
+    }
+    
+    public void SpawnRewindPoint()
+    {
+        _rewindPointInstance = Instantiate(_rewindPoint,previosPositions[previosPositions.Count - 1].Positon,Quaternion.identity);
+    }
+
+    public void DestroyRewindPoint()
+    {
+        if(_isRewindig == false)
+        {
+            if(_rewindPointInstance != null)
+            {
+                Destroy(_rewindPointInstance);
+            }
+        }
     }
 }

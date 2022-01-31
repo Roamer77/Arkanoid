@@ -11,15 +11,6 @@ public class BottomPlatform : MonoBehaviour
 
     [SerializeField]
     private BallSpawner ballSpawner;
-    
-    void Awake() 
-    {
-       // SplitBallBlock.SplitBall += OnBallSplit;    
-    }
-    void OnDestroy() 
-    {
-        //SplitBallBlock.SplitBall -= OnBallSplit;
-    }
 
     private void OnBallSplit()
     {

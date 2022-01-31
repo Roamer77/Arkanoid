@@ -12,11 +12,16 @@ public class GameManager : MonoBehaviour
   public static Action<LevelInfo> GetInfoAboutLevel;
 
   public static Action<float> SpeedBuffedPerLevel;
+
   
   public static Action DestroyAllBlocksInLevel;
   public static Action GameWasEnd;
 
   public static Action<SoundType> PlayWinConditionSound;
+
+  public static Action<bool> OnChangeAmountOfBallsInGame;
+
+  public BallSpawner BallSpawner;
 
   private int _userScore {get; set;}
 
@@ -54,6 +59,13 @@ public class GameManager : MonoBehaviour
       {
          SceneManager.LoadScene(0); 
       }
+    if(BallSpawner.Pool.CountActive == 1)
+    {
+      OnChangeAmountOfBallsInGame?.Invoke(false);
+    }else
+    {
+      OnChangeAmountOfBallsInGame?.Invoke(true);
+    }
   }
 
   void OnDestroy()

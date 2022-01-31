@@ -12,14 +12,16 @@ public class TimeRewardDisplayer : MonoBehaviour
     void Awake()
     {
         _text = GetComponent<TextMeshPro>();
-        Ball.SpendAttempt += DisplayAttemptIndex;   
+        Player.SpendAttempt += DisplayAttemptIndex;   
         GameManager.GetInfoAboutLevel += DisplayAtteptIndex;
+        GameManager.OnChangeAmountOfBallsInGame += OnBallSplited;
     }
 
     void OnDestroy() 
     {
-        Ball.SpendAttempt -= DisplayAttemptIndex;
-        GameManager.GetInfoAboutLevel += DisplayAtteptIndex;    
+        Player.SpendAttempt -= DisplayAttemptIndex;
+        GameManager.GetInfoAboutLevel += DisplayAtteptIndex;  
+        GameManager.OnChangeAmountOfBallsInGame -= OnBallSplited;  
     }
 
     private void DisplayAttemptIndex(int value)
@@ -29,5 +31,10 @@ public class TimeRewardDisplayer : MonoBehaviour
     private void DisplayAtteptIndex(LevelInfo value)
     {
         _text.SetText($"Time rewind : {value.TimeRewindAttapts.ToString()}");
+    }
+
+    private void OnBallSplited(bool value)
+    {
+        _text.color = value ? new Color32(255,0,0,150) : new Color32(255,255,255,255);
     }
 }

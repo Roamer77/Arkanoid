@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 719f1d1c5ebcf4c719819e7bd56eb54b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rewindPoint: {fileID: 2670352895213195142, guid: 457709dd1e02f4c5e9bb3f9e9627a76e, type: 3}
+  _rewindEffect: {fileID: 354738778863182456, guid: d8df2479ad7964e3c926ed5798559398, type: 3}
   _ballRigidBody: {fileID: 1047734425}
   TrailRenderer: {fileID: 1047734430}
   RewindTime: 2

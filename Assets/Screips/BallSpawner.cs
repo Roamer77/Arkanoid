@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
@@ -13,11 +14,6 @@ public class BallSpawner : MonoBehaviour
     {
         Pool = new ObjectPool<Ball>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool , OnDestroyPollObject, false, 10);
         SplitBallBlock.SplitBall += SpawnBallAfterSplit;
-
-        for (int i = 0; i < 3; i++)
-        {
-            CreatePooledItem().gameObject.SetActive(false);
-        }
     }
     void OnDestroy()
     {
@@ -32,24 +28,31 @@ public class BallSpawner : MonoBehaviour
             Quaternion angel = Quaternion.AngleAxis(15 * i,Vector3.forward);
             ball.BallRigidBody.velocity = angel * Vector2.up * ballInGameVelocity.magnitude; 
         }
-    
     }
     private Ball CreatePooledItem ()
-    {
-       return Instantiate(_ballPrefub, new Vector3(0,0,0), Quaternion.identity);
+    {  
+        var instance = Instantiate(_ballPrefub, Vector3.zero, Quaternion.identity);
+        instance.gameObject.SetActive(false);
+        return instance;
     }
     private void OnReturnedToPool(Ball item)
     {
-        item.gameObject.SetActive(false);
+        ChangeBalicBallState(item, false);
     }
 
     private void OnTakeFromPool(Ball item)
     {
-        item.gameObject.SetActive(true);
+        ChangeBalicBallState(item, true);
     }
 
     private void OnDestroyPollObject(Ball item)
     {
         Destroy(item.gameObject);
     }
+
+    private void ChangeBalicBallState(Ball item, bool value)
+    {
+        item.gameObject.SetActive(value);
+        item.TrailRenderer.enabled = value;
+    } 
 }
