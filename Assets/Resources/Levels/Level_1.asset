@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbf7ee83b1014b97863d1b79d477980, type: 3}
+  m_Name: Level_1
+  m_EditorClassIdentifier: 
+  _levelName: Level 1
+  _amountOfRows: 1
+  _chanseOfBlockWithHeathInRow: 0.1
+  _chanseOfSimpleBlockInRow: 0.8
+  _chanseOfBonusWidthBlockInRow: 0.1
+  _chanseOfSlowDownBlockInRow: 0.1
+  _chanseOfSplitBlockInRow: 0
+  _blockWithHealth: {fileID: 1831728613727566924, guid: 9b20473bf12264da8ae1a27fc110bb01, type: 3}
+  _block: {fileID: -6123102660192013339, guid: 61162d86751994d20aea1a336e02acbd, type: 3}
+  _bonusWidthBlock: {fileID: 4598673075654564194, guid: ab25f9a6cd62042c5b2783cb3baaaba0, type: 3}
+  _slowDownBallBlock: {fileID: 7661121477563956086, guid: 377dbd1f2eab14216a22882dc7c93d6d, type: 3}
+  _splitBallBlock: {fileID: -5635080680453867203, guid: 592485f06271942da8894258c86f60a1, type: 3}
+  _buffSpeedBallPefLevel: 1
+  _timeRewindAttapts: 1
